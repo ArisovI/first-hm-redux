@@ -1,3 +1,7 @@
+import { firstTodoState } from "../store/firstTodoReducer";
+import { secondTodoState } from "../store/secondTodoReducer";
+import { shopState } from "../store/shopReducer";
+
 export interface todoState {
   id: number;
   value: string;
@@ -18,6 +22,18 @@ export interface cart {
   name: string;
   id: number;
   count: number;
+}
+
+export interface TaskState {
+  id: number;
+  value: string;
+  status: boolean;
+}
+
+export interface defaultState {
+  firstTodo: firstTodoState;
+  secondTodo: secondTodoState;
+  shop: shopState;
 }
 
 export const NEW_TODO = "newTodo";

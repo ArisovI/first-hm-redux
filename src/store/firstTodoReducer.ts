@@ -1,157 +1,59 @@
-import {
-  CHANGE_STATUS,
-  DELETE_TODO,
-  todoState,
-  NEW_TODO,
-  productsState,
-  CHANGE_VALUE,
-  cart,
-  ADD_TO_CART,
-  DELETE_TO_CART,
-  INCREMENT,
-  DECREMENT,
-} from "../types/types";
-
-export interface State {
-  firstTodo: todoState[];
-  secondTodo: todoState[];
-  shop: productsState[];
-  cart: cart[];
+export interface firstTodoItem {
+  id: number;
+  value: string;
+  status: boolean;
 }
-const initialState: State = {
+export interface firstTodoState {
+  firstTodo: firstTodoItem[];
+}
+const initialState: firstTodoState = {
   firstTodo: [],
-  secondTodo: [],
-  shop: [
-    {
-      id: 1,
-      name: "random",
-      price: 150,
-      img: "./img/img1.jpg",
-      count: 1,
-    },
-    {
-      id: 2,
-      name: "random 2",
-      price: 300,
-      img: "./img/img2.jpg",
-      count: 1,
-    },
-  ],
-  cart: [],
 };
-const firstTodoReducer = (state = initialState, action: any) => {
+const NEW_TOOD = "newTodo";
+const DELETE_TODO = "deleteTodo";
+const CHANGE_STATUS = "changeStatus";
+const reducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case NEW_TODO:
-      const newTodo = {
+    case NEW_TOOD:
+      const todo = {
         id: state.firstTodo.length + 1,
         value: action.payload,
         status: false,
       };
-
-      const secondNewTodo = {
-        id: state.secondTodo.length + 1,
-        value: action.payload,
-        status: false,
-      };
-
       return {
         ...state,
-        firstTodo: [...state.firstTodo, newTodo],
-        secondTodo: [...state.secondTodo, secondNewTodo],
-      };
-
-    case CHANGE_VALUE:
-      const { item, newValue } = action.payload;
-
-      const newState = state.secondTodo.map((todo) => {
-        if (todo.id === item.id) {
-          return { ...todo, value: newValue };
-        }
-        return todo;
-      });
-
-      return {
-        ...state,
-        secondTodo: newState,
+        firstTodo: [...state.firstTodo, todo],
       };
 
     case DELETE_TODO:
-      const firstFilterState = state.firstTodo.filter(
+      const deleteTodo = state.firstTodo.filter(
         (item) => item.id !== action.payload
       );
-      const secondFilterState = state.secondTodo.filter(
-        (item) => item.id !== action.payload
-      );
-      return {
-        ...state,
-        firstTodo: firstFilterState,
-        secondTodo: secondFilterState,
-      };
+      return { ...state, firstTodo: deleteTodo };
 
     case CHANGE_STATUS:
-      const updatedFirstTodo = state.firstTodo.map((item) => {
-        if (item.id === action.payload) {
-          return { ...item, status: !item.status };
+      const changeTodo = state.firstTodo.map((item) => {
+        if (item.id === action.payload.id) {
+          item.status = !item.status;
         }
         return item;
       });
-      const updatedSecondTodo = state.secondTodo.map((item) => {
-        if (item.id === action.payload) {
-          return { ...item, status: !item.status };
-        }
-        return item;
-      });
-
       return {
         ...state,
-        firstTodo: updatedFirstTodo,
-        secondTodo: updatedSecondTodo,
+        firstTodo: changeTodo,
       };
-
-    case ADD_TO_CART:
-      const findIndex = state.cart.findIndex(
-        (item) => item.id === action.payload.id
-      );
-
-      if (findIndex !== -1) {
-        state.cart[findIndex].count++;
-      } else {
-        state.cart.push(action.payload);
-      }
-      return state;
-
-    case DELETE_TO_CART:
-      const filterCart = state.cart.filter(
-        (item) => item.id !== action.payload
-      );
-
-      return {
-        ...state,
-        cart: filterCart,
-      };
-
-    case INCREMENT:
-      const increment = state.cart.map((item) => {
-        if (item.id === action.payload.id) {
-          item.count++;
-        }
-        return item;
-      });
-
-      return { ...state, cart: increment };
-
-    case DECREMENT:
-      const decrement = state.cart.map((item) => {
-        if (item.id === action.payload.id) {
-          if (item.count > 1) {
-            item.count--;
-          }
-        }
-        return item;
-      });
-      return { ...state, cart: decrement };
     default:
       return state;
   }
 };
-export default firstTodoReducer;
+
+export const newTodo = (payload: any) => ({ type: NEW_TOOD, payload });
+export const deleteTodo = (payload: number) => ({
+  type: DELETE_TODO,
+  payload,
+});
+export const changeStatus = (payload: firstTodoItem) => ({
+  type: CHANGE_STATUS,
+  payload,
+});
+export default reducer;

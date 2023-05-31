@@ -84,9 +84,6 @@ a {
 }
 
 .secondTodo {
-  background: rgb(255, 247, 247);
-  padding: 50px;
-  border-radius: 10px;
   width: 400px;
   &Title {
     display: flex;
@@ -95,6 +92,9 @@ a {
     color: cornflowerblue;
   }
   &Content {
+    background: white;
+    padding: 50px;
+    border-radius: 10px;
     ul {
       li {
         border-bottom: 3px dashed cornflowerblue;
@@ -115,9 +115,37 @@ a {
     }
   }
 }
-
-.statusTrue{
-  background: red;
+.statusTrue {
+  background: crimson;
+  padding: 50px;
+  border-radius: 10px;
+  width: 400px;
+  &Title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    button {
+      color: black;
+    }
+  }
+  ul {
+    li {
+      border-bottom: 3px dashed cornflowerblue;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      input {
+        background: none;
+        border: 0;
+        outline: 0;
+      }
+      & > span:nth-last-child(1) {
+        padding: 4px 10px;
+        cursor: pointer;
+        font-size: 25px;
+      }
+    }
+  }
 }
 
 .products {

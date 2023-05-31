@@ -1,21 +1,19 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { ADD_TO_CART, cart, productsState } from "../types/types";
+import { addToCart } from "../store/shopReducer";
+import { useAppDispatch } from "../store/store";
+import { productsState } from "../types/types";
 interface IProductItemProps {
   item: productsState;
 }
 const ProductItem: React.FC<IProductItemProps> = ({ item }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   return (
-    <>
-      <li>
-        <img src={item.img} alt={item.img} />
-        <span>{item.name}</span>
-        <button onClick={() => dispatch({ type: ADD_TO_CART, payload: item })}>
-          Add To Cart
-        </button>
-      </li>
-    </>
+    <li>
+      <img src={item.img} alt={item.img} />
+      <span>{item.name}</span>
+      <button onClick={() => dispatch(addToCart(item))}>Add To Cart</button>
+    </li>
   );
 };
 

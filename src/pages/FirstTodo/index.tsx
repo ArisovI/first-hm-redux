@@ -1,23 +1,31 @@
 import { TextField, Button } from "@mui/material";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import FirstTodoItem from "../../components/FirstTodoItem";
-import { State } from "../../store/firstTodoReducer";
-import { NEW_TODO } from "../../types/types";
+import {
+  firstTodoItem,
+  firstTodoState,
+  newTodo,
+} from "../../store/firstTodoReducer";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { defaultState } from "../../types/types";
 
 const FirstTodo = () => {
-  const [inputValue, setInputValue] = React.useState<string>("");
-  const todos = useSelector((state: State) => state.firstTodo);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { firstTodo } = useAppSelector(
+    (state: defaultState) => state.firstTodo
+  );
 
+  const [inputValue, setInputValue] = React.useState<string>("");
   const handleNewTodo = () => {
     if (inputValue.trim().length > 0) {
-      dispatch({ type: NEW_TODO, payload: inputValue });
+      dispatch(newTodo(inputValue));
       setInputValue("");
     } else {
       alert("Вы ничего не написали");
     }
   };
+
+  console.log(firstTodo);
 
   return (
     <div className="firstTodo">
@@ -35,7 +43,7 @@ const FirstTodo = () => {
         </Button>
       </div>
       <ul>
-        {todos.map((item) => (
+        {firstTodo.map((item: firstTodoItem) => (
           <FirstTodoItem key={item.id} item={item} />
         ))}
       </ul>

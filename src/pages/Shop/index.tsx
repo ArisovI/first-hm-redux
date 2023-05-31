@@ -3,8 +3,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { useSelector } from "react-redux";
-import { State } from "../../store/firstTodoReducer";
+import { useAppSelector } from "../../store/store";
 import ProductItem from "../../components/ProductItem";
 import CartItem from "../../components/CartItem";
 
@@ -42,9 +41,10 @@ function a11yProps(index: number) {
 }
 
 export default function Shop() {
+  const { shop, products } = useAppSelector((state) => state.shop);
+  console.log(products);
+
   const [value, setValue] = React.useState(0);
-  const products = useSelector((state: State) => state.shop);
-  const cart = useSelector((state: State) => state.cart);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -70,7 +70,7 @@ export default function Shop() {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ul className="carts">
-          {cart.map((item) => (
+          {shop.map((item) => (
             <CartItem key={item.id} item={item} />
           ))}
         </ul>
